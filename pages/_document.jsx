@@ -5,6 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <title>Onyx Visuals</title>
+        <script src="https://sellauth.com/assets/js/sellauth-embed-2.js" />
         <meta charSet="utf-8" />
         <meta charSet="utf-8" />
         <meta name="description" content="Onyx Visuals — Luxury in Every Pixel. Breath taking graphics for brands that take their image seriously. Thumbnails, logos, banners, product boxes & more." />
