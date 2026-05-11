@@ -26,7 +26,8 @@ const styles = `
   .pg-tab.active { background:#fff; color:#0f0f0f; border-color:#fff; font-weight:700; }
   .pg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:1300px; margin:0 auto; transition:opacity 0.2s ease; }
   .pg-grid.hidden { opacity:0; }
-  .pg-card { position:relative; border-radius:12px; overflow:hidden; background:#1a1a1a; aspect-ratio:1/1; cursor:pointer; animation:fadeIn 0.35s ease forwards; border:1px solid rgba(255,255,255,0.05); }
+  .pg-card { position:relative; border-radius:12px; overflow:hidden; background:#1a1a1a; aspect-ratio:16/9; cursor:pointer; animation:fadeIn 0.35s ease forwards; border:1px solid rgba(255,255,255,0.05); }
+  .pg-card.square { aspect-ratio:1/1; }
   .pg-card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),filter 0.4s ease; }
   .pg-card:hover img { transform:scale(1.06); filter:blur(4px) brightness(0.55); }
   .pg-card-overlay { position:absolute; inset:0; opacity:0; transition:opacity 0.3s ease; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:1.1rem; }
@@ -35,7 +36,8 @@ const styles = `
   .pg-card-tag { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.45); font-weight:500; }
   .pg-view-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:30px; font-size:12px; font-weight:600; font-family:inherit; letter-spacing:0.03em; cursor:pointer; border:1px solid rgba(255,255,255,0.25); background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.08) 100%); color:#fff; backdrop-filter:blur(12px); margin-top:4px; transition:background 0.2s; }
   .pg-empty { grid-column:1/-1; text-align:center; padding:5rem 0; color:#333; font-size:14px; }
-  .pg-skeleton { border-radius:12px; aspect-ratio:1/1; background:#1a1a1a; background-image:linear-gradient(90deg,#1a1a1a 0px,#242424 200px,#1a1a1a 400px); background-size:800px 100%; animation:shimmer 1.6s infinite linear; }
+  .pg-skeleton { border-radius:12px; aspect-ratio:16/9; background:#1a1a1a; background-image:linear-gradient(90deg,#1a1a1a 0px,#242424 200px,#1a1a1a 400px); background-size:800px 100%; animation:shimmer 1.6s infinite linear; }
+  .pg-skeleton.square { aspect-ratio:1/1; }
   .pg-lightbox { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.92); backdrop-filter:blur(12px); opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
   .pg-lightbox.open { opacity:1; pointer-events:all; }
   .pg-lightbox-img { max-width:90vw; max-height:88vh; border-radius:12px; object-fit:contain; box-shadow:0 32px 80px rgba(0,0,0,0.6); transform:scale(0.94); transition:transform 0.3s cubic-bezier(0.16,1,0.3,1); }
@@ -112,10 +114,10 @@ export default function PortfolioGrid() {
         </div>
 
         <div className="pg-grid" style={{ opacity: visible ? 1 : 0 }}>
-          {loading ? Array.from({ length: 8 }).map((_, i) => <div key={i} className="pg-skeleton" />) :
+          {loading ? Array.from({ length: 8 }).map((_, i) => <div key={i} className={`pg-skeleton${active === "Logos" ? " square" : ""}`} />) :
            items.length === 0 ? <div className="pg-empty">No items in this category yet.</div> :
            items.map(item => (
-            <div key={item.id} className="pg-card">
+            <div key={item.id} className={`pg-card${item.category === "Logos" ? " square" : ""}`}>
               <img src={item.image_url} alt={item.title} loading="lazy" />
               <div className="pg-card-overlay">
                 <span className="pg-card-title">{item.title}</span>
@@ -143,6 +145,6 @@ export default function PortfolioGrid() {
           </div>
         )}
       </div>
-    </>
+    </> 
   );
 }

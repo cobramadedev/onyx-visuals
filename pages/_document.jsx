@@ -4,30 +4,28 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* ── Primary Meta ───────────────────────── */}
+        <title>Onyx Visuals</title>
         <meta charSet="utf-8" />
-        <meta name="description" content="Onyx Visuals — Luxury in Every Pixel. Premium graphics for brands that take their image seriously. Thumbnails, logos, banners, product boxes & more." />
+        <meta charSet="utf-8" />
+        <meta name="description" content="Onyx Visuals — Luxury in Every Pixel. Breath taking graphics for brands that take their image seriously. Thumbnails, logos, banners, product boxes & more." />
         <meta name="keywords" content="graphic design, thumbnails, logos, banners, product boxes, product cards, onyx visuals, custom graphics" />
         <meta name="author" content="Onyx Visuals" />
         <meta name="theme-color" content="#808080" />
 
-        {/* ── Open Graph (Discord, Facebook etc) ─── */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://onyxvisuals.vercel.app" />
         <meta property="og:title" content="Onyx Visuals — Luxury in Every Pixel" />
-        <meta property="og:description" content="Premium graphics for brands that take their image seriously. Thumbnails, logos, banners, product boxes & more. Trusted by 700+ satisfied customers." />
-        <meta property="og:image" content="https://i.postimg.cc/25Lw0xhg/3.png" />
+        <meta property="og:description" content="Breath taking graphics for brands that take their image seriously. Thumbnails, logos, banners, product boxes & more. Trusted by 700+ satisfied customers." />
+        <meta property="og:image" content="https://media.discordapp.net/attachments/1500973833035972619/1502043465524052201/Banner.png?ex=6a038c7c&is=6a023afc&hm=272d9cda7ee457a0057afd13fbe9f8adacc121b5bb31b82028d79ed537d4d39b&=&format=webp&quality=lossless&width=928&height=522" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:site_name" content="Onyx Visuals" />
 
-        {/* ── Twitter Card ────────────────────────── */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Onyx Visuals — Luxury in Every Pixel" />
-        <meta name="twitter:description" content="Premium graphics for brands that take their image seriously. Thumbnails, logos, banners & more." />
-        <meta name="twitter:image" content="https://i.postimg.cc/25Lw0xhg/3.png" />
+        <meta name="twitter:description" content="Breath taking graphics for brands that take their image seriously. Thumbnails, logos, banners & more." />
+        <meta name="twitter:image" content="https://media.discordapp.net/attachments/1500973833035972619/1502043465524052201/Banner.png?ex=6a038c7c&is=6a023afc&hm=272d9cda7ee457a0057afd13fbe9f8adacc121b5bb31b82028d79ed537d4d39b&=&format=webp&quality=lossless&width=928&height=522" />
 
-        {/* ── Favicon ─────────────────────────────── */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/logo.png" />
 
