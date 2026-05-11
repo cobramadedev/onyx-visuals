@@ -39,6 +39,7 @@ export default function Navbar() {
   return (
     <>
       <style>{`
+        /* ── Outer bar ── */
         .nw {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
           font-family: 'Satoshi','Inter',system-ui,sans-serif;
@@ -76,6 +77,7 @@ export default function Navbar() {
           padding: 0 2rem;
         }
 
+        /* ── Logo ── */
         .nw-logo {
           display: flex; align-items: center;
           text-decoration: none; flex-shrink: 0; transition: opacity 0.2s;
@@ -184,11 +186,13 @@ export default function Navbar() {
           font-size: 13px; font-weight: 700; font-family: inherit;
           letter-spacing: 0.04em; text-decoration: none; cursor: pointer; border: none;
           background: linear-gradient(180deg,#ffffff 0%,#e8e8e8 50%,#d4d4d4 100%);
-          color: #111;
+          color: #111 !important;
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.4);
           transition: opacity 0.2s;
+          border-bottom: none !important;
+          background-color: #fff !important;
         }
-        .nw-mobile-cta:hover { opacity: 0.88; }
+        .nw-mobile-cta:hover { opacity: 0.88; background: linear-gradient(180deg,#ffffff 0%,#e8e8e8 50%,#d4d4d4 100%) !important; }
 
         /* ── Responsive ── */
         @media (max-width: 900px) {
@@ -204,16 +208,16 @@ export default function Navbar() {
         }
       `}</style>
 
+      {/* Navbar bar */}
       <header className={`nw${scrolled ? " sc" : ""}`}>
         <div className="nw-inner">
 
+          {/* Logo */}
           <a href="/" className="nw-logo">
-            {logoUrl
-              ? <img src={logoUrl} alt="Onyx Visuals" />
-              : <span className="nw-logo-text">Onyx<span> Visuals</span></span>
-            }
+            {logoUrl && <img src={logoUrl} alt="Onyx Visuals" />}
           </a>
 
+          {/* Centred pill */}
           <nav className="nw-pill">
             <a href="/" className={`nw-link${active === "home" ? " active" : ""}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
@@ -233,6 +237,7 @@ export default function Navbar() {
             </a>
           </nav>
 
+          {/* Right */}
           <div className="nw-right">
             <a href="#order" className="nw-cta">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>

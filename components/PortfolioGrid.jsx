@@ -115,7 +115,7 @@ export default function PortfolioGrid() {
 
         <div className="pg-grid" style={{ opacity: visible ? 1 : 0 }}>
           {loading ? Array.from({ length: 8 }).map((_, i) => <div key={i} className={`pg-skeleton${active === "Logos" ? " square" : ""}`} />) :
-           items.length === 0 ? <div className="pg-empty">No items in this category yet.</div> :
+           items.length === 0 ? <div className="pg-empty">Coming Soon...</div> :
            items.map(item => (
             <div key={item.id} className={`pg-card${item.category === "Logos" ? " square" : ""}`}>
               <img src={item.image_url} alt={item.title} loading="lazy" />
