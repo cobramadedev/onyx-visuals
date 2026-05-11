@@ -145,10 +145,9 @@ export default function Navbar() {
 
       <div className={`nw${scrolled ? " sc" : ""}`}>
 
-        {/* Logo */}
         <a href="/" className="nw-logo">
           {logoUrl
-            ? <img src={logoUrl} alt="Onyx Visuals" />
+            ? <img src="https://i.postimg.cc/25Lw0xhg/3.png" alt="Onyx Visuals" />
             : <span className="nw-logo-text">Onyx<span> Visuals</span></span>
           }
         </a>
