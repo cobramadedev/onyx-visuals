@@ -218,9 +218,8 @@ export default function Footer() {
                 <span className="ft-col-title">Pages</span>
                 <a href="/">Home</a>
                 <a href="#work">Portfolio</a>
-                <a href="#services">Services</a>
                 <a href="#vouches">Feedbacks</a>
-                <a href="#order">Order Now</a>
+                <a href="/order">Order Now</a>
               </div>
               <div className="ft-col">
                 <span className="ft-col-title">Portfolio</span>
