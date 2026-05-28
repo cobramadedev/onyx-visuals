@@ -220,6 +220,7 @@ export default function Footer() {
                 <a href="#work">Portfolio</a>
                 <a href="#vouches">Feedbacks</a>
                 <a href="/order">Order Now</a>
+                <a href="/admin">Admin</a>
               </div>
               <div className="ft-col">
                 <span className="ft-col-title">Portfolio</span>
