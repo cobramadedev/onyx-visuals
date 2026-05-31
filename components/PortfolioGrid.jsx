@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { supabase } from "../lib/supabase";
 
 const CATEGORIES = ["All", "Thumbnails", "Logos", "Banners", "Product Boxes", "Product Cards"];
@@ -10,7 +10,7 @@ const styles = `
   @keyframes shiny-text { 0%,70%,100% { background-position:calc(-100% - var(--shiny-width)) 0; } 40%,60% { background-position:calc(100% + var(--shiny-width)) 0; } }
   @keyframes revealUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
 
-  .pg-section { background:#0f0f0f; padding:6rem 2rem; min-height:60vh; font-family:'Satoshi','Inter',system-ui,sans-serif; color:#fff; }
+  .pg-section { background:#0A0A0A; padding:6rem 2rem; min-height:60vh; font-family:'Satoshi','Inter',system-ui,sans-serif; color:#fff; }
   .pg-header { text-align:center; margin-bottom:3rem; display:flex; flex-direction:column; align-items:center; gap:1.1rem; }
   .reveal { opacity:0; }
   .reveal.visible { animation:revealUp 0.65s cubic-bezier(0.16,1,0.3,1) forwards; }
@@ -24,8 +24,7 @@ const styles = `
   .pg-tab { padding:7px 18px; border-radius:30px; font-size:13px; font-weight:500; font-family:inherit; letter-spacing:0.01em; cursor:pointer; border:1px solid rgba(255,255,255,0.08); background:transparent; color:#555; transition:all 0.2s ease; }
   .pg-tab:hover { border-color:rgba(255,255,255,0.15); color:#aaa; }
   .pg-tab.active { background:#fff; color:#0f0f0f; border-color:#fff; font-weight:700; }
-  .pg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:1300px; margin:0 auto; transition:opacity 0.2s ease; }
-  .pg-grid.hidden { opacity:0; }
+  .pg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:1300px; margin:0 auto; transition:opacity 0.15s ease; }
   .pg-card { position:relative; border-radius:12px; overflow:hidden; background:#1a1a1a; aspect-ratio:16/9; cursor:pointer; animation:fadeIn 0.35s ease forwards; border:1px solid rgba(255,255,255,0.05); }
   .pg-card.square { aspect-ratio:1/1; }
   .pg-card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),filter 0.4s ease; }
@@ -51,34 +50,41 @@ const styles = `
 `;
 
 export default function PortfolioGrid() {
-  const [active, setActive]       = useState("All");
-  const [items, setItems]         = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [visible, setVisible]     = useState(true);
-  const [lightbox, setLightbox]   = useState(null);
-  const headerRef                 = useRef(null);
+  const [active, setActive]     = useState("All");
+  const [allItems, setAllItems] = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [fading, setFading]     = useState(false);
+  const [lightbox, setLightbox] = useState(null);
 
+  // Fetch ALL items once on mount
   useEffect(() => {
-    fetchItems("All");
+    supabase
+      .from("portfolio")
+      .select("id,title,category,image_url")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        if (data) setAllItems(data);
+        setLoading(false);
+      });
+
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } });
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
+      });
     }, { threshold: 0.15 });
     document.querySelectorAll("[data-reveal]").forEach(el => observer.observe(el));
   }, []);
 
-  const fetchItems = async (category) => {
-    setLoading(true);
-    let query = supabase.from("portfolio").select("id,title,category,image_url").order("created_at", { ascending: false });
-    if (category !== "All") query = query.eq("category", category);
-    const { data } = await query;
-    if (data) setItems(data);
-    setLoading(false);
-  };
+  // Filter client-side — instant, no network call
+  const items = useMemo(() => {
+    if (active === "All") return allItems;
+    return allItems.filter(i => i.category === active);
+  }, [active, allItems]);
 
   const switchCategory = (cat) => {
     if (cat === active) return;
-    setVisible(false);
-    setTimeout(() => { setActive(cat); fetchItems(cat); setVisible(true); }, 200);
+    setFading(true);
+    setTimeout(() => { setActive(cat); setFading(false); }, 120);
   };
 
   const openLightbox = (item) => { setLightbox(item); document.body.style.overflow = "hidden"; };
@@ -104,7 +110,7 @@ export default function PortfolioGrid() {
             </p>
           </div>
           <h2 className="pg-title reveal delay-1" data-reveal>The Portfolio</h2>
-          <p className="pg-sub reveal delay-2" data-reveal>Browse work across every category we offer.</p>
+          <p className="pg-sub reveal delay-2" data-reveal>Here's some of our recent projects.</p>
         </div>
 
         <div className="pg-tabs">
@@ -113,22 +119,27 @@ export default function PortfolioGrid() {
           ))}
         </div>
 
-        <div className="pg-grid" style={{ opacity: visible ? 1 : 0 }}>
-          {loading ? Array.from({ length: 8 }).map((_, i) => <div key={i} className={`pg-skeleton${active === "Logos" ? " square" : ""}`} />) :
-           items.length === 0 ? <div className="pg-empty">Coming Soon...</div> :
-           items.map(item => (
-            <div key={item.id} className={`pg-card${item.category === "Logos" ? " square" : ""}`}>
-              <img src={item.image_url} alt={item.title} loading="lazy" />
-              <div className="pg-card-overlay">
-                <span className="pg-card-title">{item.title}</span>
-                <span className="pg-card-tag">{item.category}</span>
-                <button className="pg-view-btn" onClick={() => openLightbox(item)}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                  View Image
-                </button>
-              </div>
-            </div>
-          ))}
+        <div className="pg-grid" style={{ opacity: fading ? 0 : 1 }}>
+          {loading
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className={`pg-skeleton${active === "Logos" ? " square" : ""}`} />
+              ))
+            : items.length === 0
+            ? <div className="pg-empty">Coming Soon...</div>
+            : items.map(item => (
+                <div key={item.id} className={`pg-card${item.category === "Logos" ? " square" : ""}`}>
+                  <img src={item.image_url} alt={item.title} loading="lazy" />
+                  <div className="pg-card-overlay">
+                    <span className="pg-card-title">{item.title}</span>
+                    <span className="pg-card-tag">{item.category}</span>
+                    <button className="pg-view-btn" onClick={() => openLightbox(item)}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                      View Image
+                    </button>
+                  </div>
+                </div>
+              ))
+          }
         </div>
       </section>
 
@@ -145,6 +156,6 @@ export default function PortfolioGrid() {
           </div>
         )}
       </div>
-    </> 
+    </>
   );
 }

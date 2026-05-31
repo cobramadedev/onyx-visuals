@@ -1,9 +1,6 @@
-const styles = `
-  @keyframes aurora {
-    0%   { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
-  }
+import Plasma from "./Plasma";
 
+const styles = `
   @keyframes bounce-scroll {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50%       { transform: translateX(-50%) translateY(7px); }
@@ -20,83 +17,17 @@ const styles = `
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: #0f0f0f;
+    background: #0A0A0A;
     font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
     color: #fff;
     -webkit-font-smoothing: antialiased;
   }
 
-  .aurora-mask {
-    pointer-events: none;
+
+  .hero-rays {
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 75%;
+    inset: 0;
     z-index: 1;
-    overflow: hidden;
-    -webkit-mask-image: radial-gradient(ellipse at 55% 0%, black 10%, transparent 70%);
-            mask-image: radial-gradient(ellipse at 55% 0%, black 10%, transparent 70%);
-  }
-
-  .aurora-inner {
-    width: 200%;
-    height: 100%;
-    animation: aurora 90s linear infinite;
-    will-change: transform;
-    background-image: repeating-linear-gradient(
-      105deg,
-      transparent 0%,
-      transparent 2%,
-      rgba(255,255,255,0.00) 2%,
-      rgba(255,255,255,0.07) 3.5%,
-      rgba(255,255,255,0.12) 5%,
-      rgba(255,255,255,0.07) 6.5%,
-      rgba(255,255,255,0.00) 8%,
-      transparent 8%,
-      transparent 10%,
-      rgba(255,255,255,0.00) 10%,
-      rgba(255,255,255,0.04) 11%,
-      rgba(255,255,255,0.08) 12.5%,
-      rgba(255,255,255,0.04) 14%,
-      rgba(255,255,255,0.00) 15%,
-      transparent 15%,
-      transparent 17%,
-      rgba(255,255,255,0.00) 17%,
-      rgba(255,255,255,0.09) 19%,
-      rgba(255,255,255,0.16) 21.5%,
-      rgba(255,255,255,0.09) 24%,
-      rgba(255,255,255,0.00) 26%,
-      transparent 26%,
-      transparent 28%,
-      rgba(255,255,255,0.00) 28%,
-      rgba(255,255,255,0.03) 29%,
-      rgba(255,255,255,0.06) 30%,
-      rgba(255,255,255,0.03) 31%,
-      rgba(255,255,255,0.00) 32%,
-      transparent 32%,
-      transparent 34%,
-      rgba(255,255,255,0.00) 34%,
-      rgba(255,255,255,0.06) 36%,
-      rgba(255,255,255,0.13) 38.5%,
-      rgba(255,255,255,0.06) 41%,
-      rgba(255,255,255,0.00) 43%,
-      transparent 43%,
-      transparent 45%,
-      rgba(255,255,255,0.00) 45%,
-      rgba(255,255,255,0.05) 46.5%,
-      rgba(255,255,255,0.10) 48%,
-      rgba(255,255,255,0.05) 49.5%,
-      rgba(255,255,255,0.00) 50%,
-      transparent 50%
-    );
-  }
-
-  .aurora-fade {
-    pointer-events: none;
-    position: absolute;
-    left: 0; right: 0;
-    top: 38%; height: 42%;
-    background: linear-gradient(to bottom, transparent, #0f0f0f);
-    z-index: 2;
   }
 
   .hero-body {
@@ -170,7 +101,6 @@ const styles = `
     color: #fff;
     max-width: 820px;
     margin: 0;
-    font-style: normal;
   }
 
   .hero-sub {
@@ -186,6 +116,8 @@ const styles = `
     gap: 12px;
     align-items: center;
     margin-top: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .hero-btn {
@@ -200,13 +132,12 @@ const styles = `
     font-weight: 700;
     font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
     text-decoration: none;
-    transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background 0.25s cubic-bezier(0.16,1,0.3,1),
+                box-shadow 0.25s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.25s cubic-bezier(0.16,1,0.3,1);
     white-space: nowrap;
     letter-spacing: 0.01em;
     cursor: pointer;
-    isolation: isolate;
     border: none;
   }
 
@@ -254,10 +185,17 @@ const styles = `
     );
     border-color: rgba(255,255,255,0.16);
     color: #fff;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.14),
-      inset 0 -1px 0 rgba(0,0,0,0.22),
-      0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .hero-bottom-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    background: linear-gradient(to bottom, transparent, #0A0A0A);
+    pointer-events: none;
+    z-index: 10;
   }
 
   .hero-scroll {
@@ -273,6 +211,11 @@ const styles = `
     color: rgba(255,255,255,0.22);
     animation: bounce-scroll 2s ease-in-out infinite;
   }
+
+  @media (max-width: 480px) {
+    .hero-cta-row { flex-direction: column; width: 100%; }
+    .hero-btn { width: 100%; justify-content: center; }
+  }
 `;
 
 export default function Hero() {
@@ -282,53 +225,53 @@ export default function Hero() {
 
       <section className="hero">
 
-        <div className="aurora-mask" aria-hidden="true">
-          <div className="aurora-inner" />
+        <div className="hero-rays">
+          <Plasma
+            color="#9b9b9b"
+            speed={0.8}
+            direction="forward"
+            scale={1}
+            opacity={0.9}
+            mouseInteractive={false}
+          />
         </div>
-        <div className="aurora-fade" aria-hidden="true" />
 
         <div className="hero-body">
 
           <div className="hero-badge">
             <p className="hero-badge-inner">
-              <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 100 100" fill="currentColor">
-                  <path d="m50.027 10.459-.018-.032-33.606 19.404.076.132v22.893h.014c.286 19.111 14.859 34.755 33.519 36.718 18.66-1.962 33.234-17.606 33.519-36.718V29.953l.066-.114zm-.015 69.097V51.677H26.435V35.651L50.012 22.04v29.637h23.563v1.179h.017c-.278 13.593-10.439 24.798-23.58 26.7" />
+              <span style={{ display:"flex", alignItems:"center", gap:"6px" }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 2L9.5 8.5L16 10L9.5 11.5L8 18L6.5 11.5L0 10L6.5 8.5L8 2Z"/>
+                  <path d="M18 3L18.8 6.2L22 7L18.8 7.8L18 11L17.2 7.8L14 7L17.2 6.2L18 3Z"/>
+                  <path d="M18.5 14L19.3 17.2L22.5 18L19.3 18.8L18.5 22L17.7 18.8L14.5 18L17.7 17.2L18.5 14Z"/>
                 </svg>
-                Trusted by 700+ Satisfied Customers
+                Start your brand's journey with us
               </span>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="hero-badge-arrow">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
               </svg>
             </p>
           </div>
 
-          <h1 className="hero-h1">
-            Luxury in Every Pixel
-          </h1>
+          <h1 className="hero-h1">Build your brand with modern design</h1>
 
           <p className="hero-sub">
-            Onyx Visuals crafts sharp, intentional graphics for brands
-            that take their image seriously.
+            From stunning visuals to high-performing websites, we've got you covered.
           </p>
 
           <div className="hero-cta-row">
             <a href="#work" className="hero-btn hero-btn-primary">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7" rx="1" />
-                <rect x="14" y="3" width="7" height="7" rx="1" />
-                <rect x="3" y="14" width="7" height="7" rx="1" />
-                <rect x="14" y="14" width="7" height="7" rx="1" />
+                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
               </svg>
-              Browse Portfolio
+              Our Projects
             </a>
-
             <a href="/order" className="hero-btn hero-btn-ghost">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                <path d="M3 6h18" />
-                <path d="M16 10a4 4 0 0 1-8 0" />
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                <path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
               </svg>
               Order Now
             </a>
@@ -336,13 +279,14 @@ export default function Hero() {
 
         </div>
 
+        <div className="hero-bottom-fade" />
+
         <div className="hero-scroll" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="5" y="2" width="14" height="20" rx="7" />
-            <path d="M12 6v4" />
+            <rect x="5" y="2" width="14" height="20" rx="7"/><path d="M12 6v4"/>
           </svg>
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="m6 9 6 6 6-6" />
+            <path d="m6 9 6 6 6-6"/>
           </svg>
         </div>
 

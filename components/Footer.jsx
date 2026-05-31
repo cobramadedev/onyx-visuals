@@ -205,7 +205,7 @@ export default function Footer() {
                 </div>
               </a>
               <p className="ft-tagline">
-                Premium graphics for brands that take their image seriously. Thumbnails, logos, banners & more.
+                From stunning visuals to high-performing websites, we've got you covered.
               </p>
               <div className="ft-status">
                 <span className="ft-dot" />
@@ -220,7 +220,6 @@ export default function Footer() {
                 <a href="#work">Portfolio</a>
                 <a href="#vouches">Feedbacks</a>
                 <a href="/order">Order Now</a>
-                <a href="/admin">Admin</a>
               </div>
               <div className="ft-col">
                 <span className="ft-col-title">Portfolio</span>

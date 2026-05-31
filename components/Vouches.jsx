@@ -127,7 +127,7 @@ export default function Vouches() {
         .vr.d1{animation-delay:0.1s}.vr.d2{animation-delay:0.2s}
       `}</style>
       <section id="vouches" style={{
-        background:"#0f0f0f", padding:"6rem 0",
+        background:"#0A0A0A", padding:"6rem 0",
         fontFamily:"'Satoshi','Inter',system-ui,sans-serif", color:"#fff", overflow:"hidden",
       }}>
         <div style={{ textAlign:"center", marginBottom:"3.5rem", padding:"0 2rem" }}
@@ -147,7 +147,7 @@ export default function Vouches() {
             Our Feedbacks.
           </h2>
           <p className="vr d2" style={{ fontSize:14, color:"#444", maxWidth:440, margin:"0 auto" }}>
-            Real feedback from real buyers — every word unedited and unfiltered.
+            Here's what some of our clients have to say about our services.
           </p>
         </div>
 
