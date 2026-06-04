@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import PortfolioGrid from "../components/PortfolioGrid";
 import Footer from "../components/Footer";
+import FAQ from "../components/FAQ";
 import Vouches from "../components/Vouches";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
         <Hero />
         <PortfolioGrid />
         <Vouches />
+        <FAQ />
       </main>
       <Footer />
     </>

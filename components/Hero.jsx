@@ -1,4 +1,4 @@
-import Plasma from "./Plasma";
+import LightRays from "./LightRays";
 
 const styles = `
   @keyframes bounce-scroll {
@@ -23,6 +23,17 @@ const styles = `
     -webkit-font-smoothing: antialiased;
   }
 
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: url('https://i.postimg.cc/v8thnnkM/ONYX-BG.png');
+    background-size: cover;
+    background-position: center top;
+    opacity: 0.5;
+    mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+  }
 
   .hero-rays {
     position: absolute;
@@ -224,15 +235,22 @@ export default function Hero() {
       <style>{styles}</style>
 
       <section className="hero">
+        <div className="hero-bg" />
 
         <div className="hero-rays">
-          <Plasma
-            color="#9b9b9b"
-            speed={0.8}
-            direction="forward"
-            scale={1}
-            opacity={0.9}
-            mouseInteractive={false}
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#ffffff"
+            raysSpeed={1}
+            lightSpread={0.6}
+            rayLength={2.5}
+            followMouse={false}
+            mouseInfluence={0}
+            noiseAmount={0}
+            distortion={0}
+            pulsating={false}
+            fadeDistance={1}
+            saturation={0}
           />
         </div>
 

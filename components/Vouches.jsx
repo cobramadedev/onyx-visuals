@@ -16,6 +16,7 @@ const ROW1 = [
   { name: "ghost_9463",      avatar: "https://cdn.discordapp.com/avatars/1012454668787523615/211e263310294b71f2a75f5a197dd01f.webp", text: "10/10 website thanks" },
   { name: "llcsurge",        avatar: "https://cdn.discordapp.com/avatars/820222685623353366/069b1572d1923eb0eb27374f56783f85.webp", text: "always come thru cuz hes my son" },
   { name: "kbservicescheats",avatar: "https://cdn.discordapp.com/avatars/1281779910997835788/bc346183726051fe4b55cb37979da5e6.webp", text: "+rep 2 thumbnails" },
+  { name: "xxx.services",            avatar: "https://cdn.discordapp.com/avatars/1130659302953209936/a_4518d041e6f31eb9b12908adcacc89ab.gif",  text: "Hes Helped me With 3 different logos and he did great on all of them aswell as my site!" }
 ];
 
 const ROW2 = [
