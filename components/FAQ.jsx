@@ -31,69 +31,49 @@ function FAQItem({ q, a }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div style={{
-      borderBottom: "1px solid rgba(255,255,255,0.06)",
-    }}>
+    <div style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
       <button
         onClick={() => setOpen(o => !o)}
         style={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "1rem",
-          padding: "1.25rem 0",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          textAlign: "left",
+          width: "100%", display: "flex", alignItems: "center",
+          justifyContent: "space-between", gap: "1rem",
+          padding: "1.25rem 0", background: "none", border: "none",
+          cursor: "pointer", textAlign: "left",
           fontFamily: "'Satoshi','Inter',system-ui,sans-serif",
         }}
       >
         <span style={{
-          fontSize: 15,
-          fontWeight: 600,
+          fontSize: 15, fontWeight: 600,
           background: "linear-gradient(to top, #9ca0ab 0%, #ffffff 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          lineHeight: 1.4,
+          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+          backgroundClip: "text", lineHeight: 1.4,
         }}>
           {q}
         </span>
         <span style={{
-          flexShrink: 0,
-          width: 24, height: 24,
+          flexShrink: 0, width: 24, height: 24,
           display: "flex", alignItems: "center", justifyContent: "center",
           transition: "transform 0.3s cubic-bezier(0.16,1,0.3,1)",
           transform: open ? "rotate(180deg)" : "rotate(0deg)",
         }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12.0001 11.121L8.28755 14.8335L7.22705 13.773L12.0001 9L16.7731 13.773L15.7126 14.8335L12.0001 11.121Z"
-              fill="url(#faqChev)"
-            />
+            <path d="M12.0001 11.121L8.28755 14.8335L7.22705 13.773L12.0001 9L16.7731 13.773L15.7126 14.8335L12.0001 11.121Z" fill="url(#faqChev)" />
             <defs>
               <linearGradient id="faqChev" x1="12" y1="9" x2="12" y2="17.22" gradientUnits="userSpaceOnUse">
-                <stop stopColor="white" />
-                <stop offset="1" stopColor="#363A3F" />
+                <stop stopColor="white" /><stop offset="1" stopColor="#363A3F" />
               </linearGradient>
             </defs>
           </svg>
         </span>
       </button>
-
       <div style={{
         overflow: "hidden",
         maxHeight: open ? "400px" : "0px",
         transition: "max-height 0.35s cubic-bezier(0.16,1,0.3,1)",
       }}>
         <p style={{
-          fontSize: 14,
-          color: "#444",
-          lineHeight: 1.8,
-          padding: "0 0 1.25rem",
-          margin: 0,
+          fontSize: 14, color: "#444", lineHeight: 1.8,
+          padding: "0 0 1.25rem", margin: 0,
           fontFamily: "'Satoshi','Inter',system-ui,sans-serif",
         }}>
           {a}
@@ -114,11 +94,20 @@ export default function FAQ() {
         .faq-reveal { opacity:0; }
         .faq-reveal.faq-visible { animation: faqReveal 0.65s cubic-bezier(0.16,1,0.3,1) forwards; }
         .faq-reveal.faq-d1 { animation-delay: 0.08s; }
-        .faq-reveal.faq-d2 { animation-delay: 0.16s; }
 
         @keyframes faqShine {
           0%,70%,100% { background-position: calc(-100% - 120px) 0; }
           40%,60%     { background-position: calc(100% + 120px) 0; }
+        }
+
+        @media (max-width: 768px) {
+          #faq { padding: 4rem 1.25rem !important; }
+          #faq .faq-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          #faq .faq-left { position: static !important; }
+          #faq h2 { font-size: 1.75rem !important; }
+        }
+        @media (max-width: 480px) {
+          #faq { padding: 3rem 1rem !important; }
         }
       `}</style>
 
@@ -140,14 +129,14 @@ export default function FAQ() {
           obs.observe(el);
         }}
       >
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: "5rem", alignItems: "start" }}>
-          <div className="faq-reveal" style={{ position: "sticky", top: "8rem" }}>
+        <div className="faq-grid" style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: "5rem", alignItems: "start" }}>
+
+          {/* Left */}
+          <div className="faq-reveal faq-left" style={{ position: "sticky", top: "8rem" }}>
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 6,
-              borderRadius: 9999,
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.05)",
-              padding: "6px 14px",
+              borderRadius: 9999, border: "1px solid rgba(255,255,255,0.1)",
+              background: "rgba(255,255,255,0.05)", padding: "6px 14px",
               marginBottom: "1.25rem",
             }}>
               <span style={{
@@ -156,8 +145,7 @@ export default function FAQ() {
                 color: "rgba(255,255,255,0.5)",
                 "--shiny-width": "120px",
                 backgroundImage: "linear-gradient(to right,transparent,rgba(255,255,255,0.8),transparent)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
+                backgroundClip: "text", WebkitBackgroundClip: "text",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "calc(-100% - var(--shiny-width)) 0",
                 backgroundSize: "var(--shiny-width) 100%",
@@ -170,17 +158,11 @@ export default function FAQ() {
               </span>
             </div>
 
-            {/* Heading */}
             <h2 style={{
-              fontSize: "clamp(1.8rem,3.5vw,2.6rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.025em",
-              lineHeight: 1.1,
-              margin: "0 0 1rem",
+              fontSize: "clamp(1.8rem,3.5vw,2.6rem)", fontWeight: 700,
+              letterSpacing: "-0.025em", lineHeight: 1.1, margin: "0 0 1rem",
               background: "linear-gradient(to top, #696969 0%, #ffffff 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
             }}>
               Frequently Asked<br />Questions
             </h2>
@@ -191,15 +173,13 @@ export default function FAQ() {
 
             <a
               href="https://discord.gg/onyxvisuals"
-              target="_blank"
-              rel="noopener noreferrer"
+              target="_blank" rel="noopener noreferrer"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
                 padding: "9px 18px", borderRadius: 30,
                 fontSize: 12, fontWeight: 600, fontFamily: "inherit",
                 textDecoration: "none", color: "rgba(255,255,255,0.55)",
-                background: "rgba(88,101,242,0.08)",
-                border: "1px solid rgba(88,101,242,0.2)",
+                background: "rgba(88,101,242,0.08)", border: "1px solid rgba(88,101,242,0.2)",
                 transition: "all 0.2s",
               }}
               onMouseEnter={e => { e.currentTarget.style.background="rgba(88,101,242,0.15)"; e.currentTarget.style.color="#fff"; }}
@@ -231,19 +211,6 @@ export default function FAQ() {
           </div>
 
         </div>
-
-        {/* Mobile layout */}
-        <style>{`
-          @media (max-width: 768px) {
-            #faq > div > div {
-              grid-template-columns: 1fr !important;
-              gap: 2.5rem !important;
-            }
-            #faq > div > div > div:first-child {
-              position: static !important;
-            }
-          }
-        `}</style>
       </section>
     </>
   );

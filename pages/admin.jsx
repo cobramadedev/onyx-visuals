@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "../lib/supabase";
 
-const CATEGORIES = ["Thumbnails", "Logos", "Banners", "Product Boxes", "Product Cards"];
+const CATEGORIES = ["Thumbnails", "Logos", "Banners", "Profile Banners", "Product Boxes", "Product Cards"];
 
 export default function AdminPage() {
   const [session, setSession]       = useState(null);
@@ -20,6 +20,11 @@ export default function AdminPage() {
   const [view, setView]             = useState("portfolio");
   const [toast, setToast]           = useState({ msg: "", type: "" });
   const fileInputRef                = useRef(null);
+  const massInputRef                = useRef(null);
+  const [massFiles, setMassFiles]   = useState([]);
+  const [massCat, setMassCat]       = useState("");
+  const [massUploading, setMassUploading] = useState(false);
+  const [massProgress, setMassProgress]   = useState({ done: 0, total: 0 });
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -119,6 +124,72 @@ export default function AdminPage() {
     }
 
     setUploading(false);
+  };
+
+  const handleMassUpload = async () => {
+    if (!massCat || massFiles.length === 0) {
+      showToast("Select a category and at least one file.", "error"); return;
+    }
+    setMassUploading(true);
+    setMassProgress({ done: 0, total: massFiles.length });
+    let successCount = 0;
+
+    for (let i = 0; i < massFiles.length; i++) {
+      const file = massFiles[i];
+      const ext   = file.name.split(".").pop().toLowerCase();
+      const title = file.name.replace(/\.[^/.]+$/, "");
+      // Use crypto.randomUUID for truly unique paths — no collisions
+      const uid   = typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const path  = `${uid}.${ext}`;
+
+      try {
+        const { error: upErr } = await supabase.storage
+          .from("portfolio-images").upload(path, file, { upsert: false });
+
+        if (upErr) {
+          console.error(`Upload error for ${file.name}:`, upErr.message);
+          showToast(`Skipped: ${file.name} — ${upErr.message}`, "error");
+          setMassProgress(p => ({ ...p, done: i + 1 }));
+          continue;
+        }
+
+        const { data: urlData } = supabase.storage
+          .from("portfolio-images").getPublicUrl(path);
+
+        const { error: insertErr } = await supabase.from("portfolio").insert({
+          title,
+          category: massCat,
+          image_url: urlData.publicUrl,
+        });
+
+        if (insertErr) {
+          console.error(`DB insert error for ${file.name}:`, insertErr.message);
+          showToast(`Saved to storage but DB failed: ${file.name}`, "error");
+        } else {
+          successCount++;
+        }
+      } catch (err) {
+        console.error(`Unexpected error for ${file.name}:`, err);
+      }
+
+      setMassProgress({ done: i + 1, total: massFiles.length });
+
+      // Small delay between uploads to avoid rate limiting
+      if (i < massFiles.length - 1) await new Promise(r => setTimeout(r, 150));
+    }
+
+    showToast(
+      `${successCount}/${massFiles.length} files uploaded successfully.`,
+      successCount === massFiles.length ? "success" : "error"
+    );
+    setMassFiles([]);
+    setMassCat("");
+    if (massInputRef.current) massInputRef.current.value = "";
+    setMassUploading(false);
+    setMassProgress({ done: 0, total: 0 });
+    fetchItems();
   };
 
   const handleSaveEdit = async () => {
@@ -231,7 +302,63 @@ export default function AdminPage() {
         </div>
 
         {view === "portfolio" && <>
-          {/* Upload */}
+          {/* Mass Upload */}
+          <div style={s.panel}>
+            <p style={s.panelTitle}>Mass Upload</p>
+            <p style={{fontSize:12,color:"#555",margin:"0 0 12px"}}>Select multiple images — titles will be set from filenames automatically.</p>
+            <div
+              style={{...s.dropZone, cursor:"pointer"}}
+              onClick={() => massInputRef.current?.click()}
+              onDragOver={e => e.preventDefault()}
+              onDrop={e => { e.preventDefault(); setMassFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith("image/"))); }}
+            >
+              <input
+                ref={massInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                style={{display:"none"}}
+                onChange={e => setMassFiles(Array.from(e.target.files))}
+              />
+              {massFiles.length > 0 ? (
+                <div style={{display:"flex",flexWrap:"wrap",gap:6,justifyContent:"center"}}>
+                  {massFiles.slice(0,6).map((f,i) => (
+                    <div key={i} style={{fontSize:11,color:"#aaa",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:6,padding:"3px 8px",maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                      {f.name.replace(/\.[^/.]+$/, "")}
+                    </div>
+                  ))}
+                  {massFiles.length > 6 && <div style={{fontSize:11,color:"#555",padding:"3px 8px"}}>+{massFiles.length - 6} more</div>}
+                </div>
+              ) : (
+                <>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p style={{fontSize:13,color:"#555"}}>Click or drag to select multiple images</p>
+                </>
+              )}
+            </div>
+
+            <div style={{display:"flex",alignItems:"flex-end",gap:12,marginTop:4}}>
+              <div style={{flex:1}}>
+                <label style={s.label}>Category</label>
+                <select style={s.select} value={massCat} onChange={e => setMassCat(e.target.value)}>
+                  <option value="">Select category</option>
+                  {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                </select>
+              </div>
+              <button
+                style={{...s.uploadBtn, opacity: massUploading ? 0.6 : 1, minWidth: 120}}
+                onClick={handleMassUpload}
+                disabled={massUploading}
+              >
+                {massUploading
+                  ? `${massProgress.done}/${massProgress.total} uploaded...`
+                  : `Upload ${massFiles.length > 0 ? `(${massFiles.length})` : ""}`
+                }
+              </button>
+            </div>
+          </div>
+
+          {/* Single Upload */}
           <div style={s.panel}>
             <p style={s.panelTitle}>Upload New Item</p>
             <div style={s.dropZone} onClick={()=>fileInputRef.current?.click()}

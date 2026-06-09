@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { supabase } from "../lib/supabase";
 
-const CATEGORIES = ["All", "Thumbnails", "Logos", "Banners", "Product Boxes", "Product Cards"];
+const CATEGORIES = ["All", "Thumbnails", "Logos", "Banners", "Profile Banners", "Product Boxes", "Product Cards"];
 const ALL_PREVIEW = 8; // 2 rows of 4
 
 const styles = `
@@ -32,6 +32,7 @@ const styles = `
   .pg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; transition:opacity 0.15s ease; }
   .pg-card { position:relative; border-radius:12px; overflow:hidden; background:#1a1a1a; aspect-ratio:16/9; cursor:pointer; animation:fadeIn 0.35s ease forwards; border:1px solid rgba(255,255,255,0.05); }
   .pg-card.square { aspect-ratio:1/1; }
+  .pg-card.banner { aspect-ratio:1280/452; }
   .pg-card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),filter 0.4s ease; }
   .pg-card:hover img { transform:scale(1.06); filter:blur(4px) brightness(0.55); }
   .pg-card-overlay { position:absolute; inset:0; opacity:0; transition:opacity 0.3s ease; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:1.1rem; }
@@ -42,6 +43,7 @@ const styles = `
   .pg-empty { grid-column:1/-1; text-align:center; padding:5rem 0; color:#333; font-size:14px; }
   .pg-skeleton { border-radius:12px; aspect-ratio:16/9; background:#1a1a1a; background-image:linear-gradient(90deg,#1a1a1a 0px,#242424 200px,#1a1a1a 400px); background-size:800px 100%; animation:shimmer 1.6s infinite linear; }
   .pg-skeleton.square { aspect-ratio:1/1; }
+  .pg-skeleton.banner { aspect-ratio:1280/452; }
 
   /* bottom fade overlay */
   .pg-fade {
@@ -164,12 +166,12 @@ export default function PortfolioGrid() {
           <div className="pg-grid" style={{ opacity: fading ? 0 : 1 }}>
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className={`pg-skeleton${active === "Logos" ? " square" : ""}`} />
+                  <div key={i} className={`pg-skeleton${active === "Logos" ? " square" : active === "Profile Banners" ? " banner" : ""}`} />
                 ))
               : items.length === 0
               ? <div className="pg-empty">Coming Soon...</div>
               : items.map(item => (
-                  <div key={item.id} className={`pg-card${item.category === "Logos" ? " square" : ""}`}>
+                  <div key={item.id} className={`pg-card${item.category === "Logos" ? " square" : item.category === "Profile Banners" ? " banner" : ""}`}>
                     <img src={item.image_url} alt={item.title} loading="lazy" />
                     <div className="pg-card-overlay">
                       <span className="pg-card-title">{item.title}</span>
@@ -184,11 +186,9 @@ export default function PortfolioGrid() {
             }
           </div>
 
-          {/* Bottom fade */}
           {showFade && <div className="pg-fade" />}
         </div>
 
-        {/* See More button */}
         {showSeeMore && (
           <div className="pg-see-more-wrap">
             <button className="pg-see-more" onClick={() => setExpanded(true)}>
