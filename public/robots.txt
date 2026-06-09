@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+ 
+Sitemap: https://onyxvisuals.xyz/sitemap.xml

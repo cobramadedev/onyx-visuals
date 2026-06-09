@@ -15,7 +15,7 @@ export default function Document() {
         <meta name="theme-color" content="#808080" />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://onyxvisuals.vercel.app" />
+        <meta property="og:url" content="https://onyxvisuals.xyz" />
         <meta property="og:title" content="Onyx Visuals — Luxury in Every Pixel" />
         <meta property="og:description" content="Breath taking graphics for brands that take their image seriously. Thumbnails, logos, banners, product boxes & more. Trusted by 700+ satisfied customers." />
         <meta property="og:image" content="https://media.discordapp.net/attachments/1500973833035972619/1502043465524052201/Banner.png?ex=6a038c7c&is=6a023afc&hm=272d9cda7ee457a0057afd13fbe9f8adacc121b5bb31b82028d79ed537d4d39b&=&format=webp&quality=lossless&width=928&height=522" />
