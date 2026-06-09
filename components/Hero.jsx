@@ -27,7 +27,7 @@ const styles = `
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: url('https://i.postimg.cc/v8thnnkM/ONYX-BG.png');
+    background-image: url('https://i.postimg.cc/gJ8T1FfR/WEBSITE-BG.png');
     background-size: cover;
     background-position: center top;
     opacity: 0.5;
