@@ -6,6 +6,7 @@ export default function Document() {
       <Head>
         <title>Onyx Visuals</title>
         <script src="https://sellauth.com/assets/js/sellauth-embed-2.js" />
+        <link rel="icon" type="image/png" href="https://i.postimg.cc/25Lw0xhg/3.png" />
         <meta charSet="utf-8" />
         <meta charSet="utf-8" />
         <meta name="description" content="Onyx Visuals — Luxury in Every Pixel. Breath taking graphics for brands that take their image seriously. Thumbnails, logos, banners, product boxes & more." />
@@ -28,7 +29,7 @@ export default function Document() {
         <meta name="twitter:image" content="https://media.discordapp.net/attachments/1500973833035972619/1502043465524052201/Banner.png?ex=6a038c7c&is=6a023afc&hm=272d9cda7ee457a0057afd13fbe9f8adacc121b5bb31b82028d79ed537d4d39b&=&format=webp&quality=lossless&width=928&height=522" />
 
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/logo.png" />
+        <link rel="apple-touch-icon" href="https://i.postimg.cc/25Lw0xhg/3.png" />
 
         {/* ── Fonts ───────────────────────────────── */}
         <link rel="preconnect" href="https://api.fontshare.com" />

@@ -1,7 +1,10 @@
 import "../styles/globals.css";
 import { useEffect, useState } from "react";
+import SiteProtection from "../components/SiteProtection";
 import Lenis from "lenis";
+import Popup from "../components/Popup";
 import Loader from "../components/Loader";
+
 
 export default function App({ Component, pageProps }) {
   const [mounted, setMounted] = useState(false);
@@ -63,10 +66,12 @@ export default function App({ Component, pageProps }) {
 
   if (!mounted) return null;
 
-  return (
-    <>
-      <Loader />
-      <Component {...pageProps} />
-    </>
-  );
+return (
+  <>
+    <SiteProtection />
+    <Loader />
+    <Popup />
+    <Component {...pageProps} />
+  </>
+);
 }

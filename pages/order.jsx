@@ -88,7 +88,7 @@ export default function OrderPage() {
         .sellauth-button.loading .icon.spinner { display: inline; animation: sa-spin 0.8s linear infinite; }
         @keyframes sa-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .sp { min-height:100vh; background:#0f0f0f; font-family:'Satoshi','Inter',system-ui,sans-serif; color:#fff; }
+        .sp { min-height:100vh; background:#0a0a0a; font-family:'Satoshi','Inter',system-ui,sans-serif; color:#fff; }
         .sp-hero { text-align:center; padding:10rem 2rem 5rem; border-bottom:1px solid rgba(255,255,255,0.05); }
         .sp-badge { display:inline-flex; align-items:center; gap:6px; border-radius:9999px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); padding:6px 14px; font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:1.25rem; }
         .sp-title { font-size:clamp(2.2rem,5vw,3.5rem); font-weight:700; letter-spacing:-0.03em; margin:0 0 1rem; line-height:1.1; }
